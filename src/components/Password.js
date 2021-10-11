@@ -3,7 +3,7 @@ import { PasswordContainer, PasswordInput } from "../styles/Inputs/AppInputs";
 import showPasswordIcon from "../images/Icon Eye.svg";
 import { useState } from "react";
 
-const Password = ({ inputText }) => {
+const Password = ({ inputText, onChange }) => {
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePasswordVisiblity = () => {
     setPasswordShown(!passwordShown);
@@ -12,6 +12,7 @@ const Password = ({ inputText }) => {
   return (
     <PasswordContainer>
       <PasswordInput
+        onChange={onChange}
         type={passwordShown ? "text" : "password"}
         placeholder={inputText}
       />

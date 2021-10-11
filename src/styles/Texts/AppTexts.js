@@ -46,3 +46,31 @@ export const InfoList = styled(InfoText)
     line-height: 37px;
 
 `
+export const PopUpTitle = styled.div `
+   color: ${brandColor};
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 26px;
+    letter-spacing: 1.18693px;
+    opacity: 0.75;
+
+`
+
+export const PopUpText = styled.div `
+    text-align: center;
+    width: 400px;
+    color: ${brandColor};
+    line-height: 22px;
+    opacity: 0.7;
+    letter-spacing: 0.327321px;
+
+`
+
+export const ErrorText = styled.p `
+    margin-top: 20px;
+    color: #FF0000;
+    text-align: center;
+    letter-spacing: 0.336px;
+    opacity: 0.8;
+`

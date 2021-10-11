@@ -38,3 +38,11 @@ export const LeftColumnSignUp = styled(LeftColumn)
     border-radius: 0 25px 25px 0;
 
 `
+export const PopUpBlock = styled.div `
+    background: #EAF8F8;
+    box-shadow: 0px 3px 10px 1px rgba(21, 106, 108, 0.5);
+    border-radius: 23px;    
+    padding: 33px 60px 40px;
+    line-height: 22px;
+
+`

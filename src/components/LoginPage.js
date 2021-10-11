@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Flexbox from "flexbox-react";
-import firebase from "../firebase";
-import { getAuth } from "firebase/auth";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+// import app from "../firebase";
+// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 import MediaButtons from "./MediaButtons";
 import Password from "./Password";
@@ -15,33 +14,16 @@ import {
 } from "../styles/Buttons/AppButtons";
 import { Input } from "../styles/Inputs/AppInputs";
 import { MainTitle, MainSubtitle, OrText } from "../styles/Texts/AppTexts";
+// import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useSignInWithEmailAndPassword } from "../firebase/hooks";
 
 const LoginPage = () => {
-  const auth = getAuth();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signInWithEmailAndPassword, user, loading, error] =
-    useSignInWithEmailAndPassword(auth);
+    useSignInWithEmailAndPassword();
 
-  if (error) {
-    return (
-      <div>
-        <p>Error: {error.message}</p>
-      </div>
-    );
-  }
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-  if (user) {
-    return (
-      <div>
-        <p>Signed In User: {user.email}</p>
-      </div>
-    );
-  }
-
+  console.log(password);
   return (
     <Flexbox
       minWidth="300px"
