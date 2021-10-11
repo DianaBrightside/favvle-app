@@ -11,6 +11,7 @@ import {
 } from "../styles/Buttons/AppButtons";
 import { Input } from "../styles/Inputs/AppInputs";
 import {
+  ErrorContainer,
   ErrorText,
   MainSubtitle,
   MainTitle,
@@ -25,6 +26,7 @@ const SignupPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [matchPassword, setMatchPassword] = useState(false);
+  const [clickSkip, setClickSkip] = useState(false);
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword();
 
@@ -53,46 +55,54 @@ const SignupPage = () => {
   console.log(password, confirmPassword);
   console.log(error);
   return (
-    <Flexbox
-      minWidth="300px"
-      className="form__wrapper"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <MainTitle>Sign up</MainTitle>
-      <MainSubtitle>Welcome</MainSubtitle>
-      <MediaButtons />
-      <OrText>or</OrText>
-      <Input
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      <Password
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        inputText="Password"
-      />
-      <Password
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        inputText="Confirm password"
-      />
-      <MainButtonSignUp onClick={() => matchPassword && handleSubmit()}>
-        Sign Up
-      </MainButtonSignUp>
-      <SkipButton>Not now</SkipButton>
-      <Link to="/">
-        <UnderlinedButton>Already have an account?</UnderlinedButton>
-      </Link>
-      {!matchPassword && password.length > 0 && confirmPassword.length > 0 && (
-        <ErrorText>Passwords don't match!</ErrorText>
-      )}
-      {error && error.code && (
-        <ErrorText>{emailErrorMessage(error.code)}</ErrorText>
-      )}
-    </Flexbox>
+    <>
+      <Flexbox
+        minWidth="300px"
+        className="form__wrapper"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <MainTitle>Sign up</MainTitle>
+        <MainSubtitle>Welcome</MainSubtitle>
+        <MediaButtons />
+        <OrText>or</OrText>
+        <Input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+        />
+        <Password
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          inputText="Password"
+        />
+        <Password
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          inputText="Confirm password"
+        />
+        <MainButtonSignUp onClick={() => matchPassword && handleSubmit()}>
+          Sign Up
+        </MainButtonSignUp>
+        <SkipButton onClick={() => setClickSkip(true)}>Not now</SkipButton>
+        <Link to="/">
+          <UnderlinedButton>Already have an account?</UnderlinedButton>
+        </Link>
+        {!matchPassword && password.length > 0 && confirmPassword.length > 0 && (
+          <ErrorContainer>
+            <ErrorText>Passwords don't match!</ErrorText>
+          </ErrorContainer>
+        )}
+        <ErrorContainer>
+          {error && error.code && (
+            <ErrorText>{emailErrorMessage(error.code)}</ErrorText>
+          )}
+        </ErrorContainer>
+      </Flexbox>
+
+      {clickSkip && <PopUpWindow onClose={() => setClickSkip(false)} />}
+    </>
   );
 };
 

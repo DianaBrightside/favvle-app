@@ -68,9 +68,18 @@ export const PopUpText = styled.div `
 `
 
 export const ErrorText = styled.p `
+    position: absolute;
+    left: 50%;
+    width: 100%;
+    transform: translateX(-50%);
     margin-top: 20px;
     color: #FF0000;
     text-align: center;
     letter-spacing: 0.336px;
     opacity: 0.8;
+`
+
+export const ErrorContainer = styled.div `
+    position: relative;
+    width: 100%;
 `

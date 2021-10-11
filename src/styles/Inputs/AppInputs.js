@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Input = styled.input `
     width: 100%;
-    padding: 5px 13px;
+    padding: 8px 13px;
     background: #FFFFFF;
     box-shadow: 0px 4px 10px rgba(21, 87, 88, 0.5);
     border-radius: 5px; 
@@ -29,7 +29,6 @@ export const PasswordContainer = styled.div `
 
     & img {
         cursor: pointer;
-        margin-top: 8px;
     }
     & img.active {
         filter: invert(56%) sepia(7%) saturate(5521%) hue-rotate(313deg) brightness(94%) contrast(109%);

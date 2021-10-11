@@ -13,8 +13,13 @@ import {
   UnderlinedButton,
 } from "../styles/Buttons/AppButtons";
 import { Input } from "../styles/Inputs/AppInputs";
-import { MainTitle, MainSubtitle, OrText } from "../styles/Texts/AppTexts";
-// import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import {
+  MainTitle,
+  MainSubtitle,
+  OrText,
+  ErrorText,
+  ErrorContainer,
+} from "../styles/Texts/AppTexts";
 import { useSignInWithEmailAndPassword } from "../firebase/hooks";
 
 const LoginPage = () => {
@@ -23,6 +28,17 @@ const LoginPage = () => {
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword();
 
+  const handleSubmit = () => {
+    signInWithEmailAndPassword(email, password);
+  };
+
+  const emailErrorMessage = (message) => {
+    if (message === "auth/invalid-email" || message === "auth/wrong-password") {
+      return "Error, we do not recognize the email or password!";
+    } else {
+      console.log(message);
+    }
+  };
   console.log(password);
   return (
     <Flexbox
@@ -48,12 +64,15 @@ const LoginPage = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <ForgotPassword>Forgot password?</ForgotPassword>
-      <MainButton onClick={() => signInWithEmailAndPassword(email, password)}>
-        Login
-      </MainButton>
+      <MainButton onClick={handleSubmit}>Login</MainButton>
       <Link to="/signup">
         <UnderlinedButton>Don't have an account yet?</UnderlinedButton>
       </Link>
+      <ErrorContainer>
+        {error && error.code && (
+          <ErrorText>{emailErrorMessage(error.code)}</ErrorText>
+        )}
+      </ErrorContainer>
     </Flexbox>
   );
 };

@@ -62,5 +62,5 @@ export const SkipButton = styled(MainButtonSignUp)
 export const SkipPopUpButton = styled(SkipButton)
 `
     background: #BAD7D5;
-    margin: 0 0 0 18px;
+    margin: 0 0 0 15px;
 `
