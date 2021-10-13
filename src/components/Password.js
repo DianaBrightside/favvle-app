@@ -1,6 +1,6 @@
 import { PasswordContainer, PasswordInput } from "../styles/Inputs/AppInputs";
 
-import showPasswordIcon from "../images/Icon Eye.svg";
+import showPasswordIcon from "../images/eye.svg";
 import { useState } from "react";
 
 const Password = ({ inputText, onChange }) => {

@@ -18,7 +18,10 @@ import {
   ErrorText,
   ErrorContainer,
 } from "../styles/Texts/AppTexts";
-import { useSignInWithEmailAndPassword } from "../firebase/hooks";
+import {
+  useSetPasswordResetEmail,
+  useSignInWithEmailAndPassword,
+} from "../firebase/hooks";
 import { useAuth } from "../firebase/authentication";
 import Spinner from "../images/Spinner.gif";
 
@@ -29,8 +32,15 @@ const LoginPage = () => {
   const [signInWithEmailAndPassword, loading, error] =
     useSignInWithEmailAndPassword();
 
+  const [sendPasswordResetEmail, isLoading, isError] =
+    useSetPasswordResetEmail();
+
   const handleSubmit = async () => {
     await signInWithEmailAndPassword(email, password);
+  };
+
+  const handleForgotPassword = async () => {
+    await sendPasswordResetEmail(email);
   };
 
   const emailErrorMessage = (message) => {
@@ -66,7 +76,9 @@ const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <ForgotPassword>Forgot password?</ForgotPassword>
+        <ForgotPassword onClick={handleForgotPassword}>
+          Forgot password?
+        </ForgotPassword>
       </InputForm>
       {(loading && <img src={Spinner} alt="loading" />) || (
         <MainButton onClick={handleSubmit}>Login</MainButton>

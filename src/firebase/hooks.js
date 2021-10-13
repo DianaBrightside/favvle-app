@@ -1,3 +1,4 @@
+import firebase from "firebase";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -6,8 +7,12 @@ import {
   FacebookAuthProvider,
   signInWithRedirect,
   onAuthStateChanged,
+  sendPasswordResetEmail,
 } from "firebase/auth";
-import { useState, useEffect } from "react";
+import {
+  useState,
+  useEffect
+} from "react";
 import app from "./app";
 
 export const useCreateUserWithEmailAndPassword = () => {
@@ -70,3 +75,26 @@ export const useUserChangedState = () => {
   }, [auth]);
   return [user];
 };
+
+export const useSetPasswordResetEmail = () => {
+  var actionCodeSettings = {
+    url: 'http://localhost:3000',
+    handleCodeInApp: false
+  };
+  const auth = getAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(null);
+  const cb = async (email) => {
+    setIsLoading(true);
+    console.log(email)
+    try {
+      await sendPasswordResetEmail(auth, email, actionCodeSettings);
+      console.log(email)
+    } catch (err) {
+      setIsError(err);
+      setIsLoading(false);
+    }
+  };
+
+  return [cb, isLoading, isError];
+}

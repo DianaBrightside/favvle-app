@@ -27,7 +27,7 @@ const PopUpWindow = ({ onClose, onSignUp }) => {
         </PopUpText>
         <>
           <MainButtonSignUp onClick={onSignUp}>Sign Up</MainButtonSignUp>
-          <SkipPopUpButton>Yes, Skip</SkipPopUpButton>
+          <SkipPopUpButton onClick={onClose}>Yes, Skip</SkipPopUpButton>
         </>
       </PopUpBlock>
     </PopUpContainer>
