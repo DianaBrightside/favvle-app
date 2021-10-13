@@ -1,4 +1,3 @@
-import firebase from "firebase";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -78,7 +77,7 @@ export const useUserChangedState = () => {
 
 export const useSetPasswordResetEmail = () => {
   var actionCodeSettings = {
-    url: 'http://localhost:3000',
+    url: 'http://localhost:3000/',
     handleCodeInApp: false
   };
   const auth = getAuth();

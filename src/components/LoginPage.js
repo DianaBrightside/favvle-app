@@ -51,6 +51,16 @@ const LoginPage = () => {
     }
     return "error";
   };
+
+  const resetPasswordError = (message) => {
+    if (message === "auth/invalid-email") {
+      return "Error, we do not recognize the email!";
+    } else if (message === "auth/user-not-found") {
+      return "User not found";
+    }
+    return "error";
+  };
+
   if (user) return <Redirect to="/account" />;
   return (
     <Flexbox
@@ -80,7 +90,7 @@ const LoginPage = () => {
           Forgot password?
         </ForgotPassword>
       </InputForm>
-      {(loading && <img src={Spinner} alt="loading" />) || (
+      {loading || (isLoading && <img src={Spinner} alt="loading" />) || (
         <MainButton onClick={handleSubmit}>Login</MainButton>
       )}
       <Link to="/signup">
@@ -89,6 +99,9 @@ const LoginPage = () => {
       <ErrorContainer>
         {error && error.code && (
           <ErrorText>{emailErrorMessage(error.code)}</ErrorText>
+        )}
+        {isError && isError.code && (
+          <ErrorText>{resetPasswordError(error.code)}</ErrorText>
         )}
       </ErrorContainer>
     </Flexbox>
