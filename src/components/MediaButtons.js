@@ -3,7 +3,7 @@ import { MediaButton } from "../styles/Buttons/AppButtons";
 
 import GoogleImage from "../images/google.png";
 import FacebookImage from "../images/facebook.png";
-import { useGoogleAuth } from "../firebase/hooks";
+import { useFacebookAuth, useGoogleAuth } from "../firebase/hooks";
 
 const MediaButtons = () => {
   return (
@@ -15,7 +15,7 @@ const MediaButtons = () => {
         </Flexbox>
       </MediaButton>
       <MediaButton>
-        <Flexbox alignItems="center">
+        <Flexbox onClick={useFacebookAuth} alignItems="center">
           <img src={FacebookImage} alt="facebook icon" />
           Login with Facebook
         </Flexbox>

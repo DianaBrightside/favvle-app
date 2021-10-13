@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Flexbox from "flexbox-react";
-// import app from "../firebase";
-// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 import MediaButtons from "./MediaButtons";
 import Password from "./Password";
@@ -12,7 +10,7 @@ import {
   MainButton,
   UnderlinedButton,
 } from "../styles/Buttons/AppButtons";
-import { Input } from "../styles/Inputs/AppInputs";
+import { Input, InputForm } from "../styles/Inputs/AppInputs";
 import {
   MainTitle,
   MainSubtitle,
@@ -21,29 +19,32 @@ import {
   ErrorContainer,
 } from "../styles/Texts/AppTexts";
 import { useSignInWithEmailAndPassword } from "../firebase/hooks";
+import { useAuth } from "../firebase/authentication";
+import Spinner from "../images/Spinner.gif";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [signInWithEmailAndPassword, user, loading, error] =
+  const { user } = useAuth();
+  const [signInWithEmailAndPassword, loading, error] =
     useSignInWithEmailAndPassword();
 
-  const handleSubmit = () => {
-    signInWithEmailAndPassword(email, password);
+  const handleSubmit = async () => {
+    await signInWithEmailAndPassword(email, password);
   };
 
   const emailErrorMessage = (message) => {
     if (message === "auth/invalid-email" || message === "auth/wrong-password") {
       return "Error, we do not recognize the email or password!";
-    } else {
-      console.log(message);
+    } else if (message === "auth/user-not-found") {
+      return "User not found";
     }
+    return "error";
   };
-  console.log(password);
+  if (user) return <Redirect to="/account" />;
   return (
     <Flexbox
       minWidth="300px"
-      className="form__wrapper"
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
@@ -52,19 +53,24 @@ const LoginPage = () => {
       <MainSubtitle>Welcome back</MainSubtitle>
       <MediaButtons />
       <OrText>or</OrText>
-      <Input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      <Password
-        inputText="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <ForgotPassword>Forgot password?</ForgotPassword>
-      <MainButton onClick={handleSubmit}>Login</MainButton>
+      <InputForm>
+        <Input
+          autoComplete="username"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+        />
+        <Password
+          inputText="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <ForgotPassword>Forgot password?</ForgotPassword>
+      </InputForm>
+      {(loading && <img src={Spinner} alt="loading" />) || (
+        <MainButton onClick={handleSubmit}>Login</MainButton>
+      )}
       <Link to="/signup">
         <UnderlinedButton>Don't have an account yet?</UnderlinedButton>
       </Link>

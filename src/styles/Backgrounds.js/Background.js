@@ -1,4 +1,3 @@
-// import Flexbox from "flexbox-react";
 import styled from "styled-components";
 
 const whiteBackground = 'linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.676956) 55.94%, rgba(255, 255, 255, 0.377568) 82.37%, rgba(255, 255, 255, 0.0001) 100%), linear-gradient(180deg, #155254 0%, #95D1CB 100%)';
@@ -9,15 +8,11 @@ export const Column = styled.div `
  }
 `
 
-// export const LeftColumn = styled.div 
 export const LeftColumn = styled(Column)
 `   padding-right: 30px;
-    justify-content: flex-end;
     padding-right: 30px;
 `
 
-//  height: 100%; 
-// export const RightColumn = styled.div 
 export const RightColumn = styled(Column)
 `
     background-image: ${whiteBackground};
@@ -53,6 +48,7 @@ export const PopUpContainer = styled.div `
 `
 
 export const PopUpBlock = styled.div `
+    position: relative;
     height: 266px;
     background: #EAF8F8;
     box-shadow: 0px 3px 10px 1px rgba(21, 106, 108, 0.5);

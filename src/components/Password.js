@@ -12,6 +12,7 @@ const Password = ({ inputText, onChange }) => {
   return (
     <PasswordContainer>
       <PasswordInput
+        autoComplete="current-password"
         onChange={onChange}
         type={passwordShown ? "text" : "password"}
         placeholder={inputText}

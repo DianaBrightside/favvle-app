@@ -36,7 +36,7 @@ const InfoBlock = () => {
               alt="music list"
             />
           </Route>
-          <Route path="/signup">
+          <Route path={["/signup", "/account"]}>
             <InfoList>
               <ul>
                 {listArray.map((item, index) => {

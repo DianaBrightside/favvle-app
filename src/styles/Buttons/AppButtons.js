@@ -64,3 +64,15 @@ export const SkipPopUpButton = styled(SkipButton)
     background: #BAD7D5;
     margin: 0 0 0 15px;
 `
+export const CloseButton = styled.button `
+    cursor: pointer;
+    width: 22px;
+    height: 22px;
+    background: rgba(255,255,255,0.4);
+    box-shadow: 2px 2px 6px rgb(21 87 88 / 50%);
+    position: absolute;
+    right: 20px;
+    border: none;
+    border-radius: 50%;
+    top: 16px;
+`

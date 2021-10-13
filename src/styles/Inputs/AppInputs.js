@@ -34,3 +34,7 @@ export const PasswordContainer = styled.div `
         filter: invert(56%) sepia(7%) saturate(5521%) hue-rotate(313deg) brightness(94%) contrast(109%);
     }
 `
+
+export const InputForm = styled.form `
+    width: 100%;
+`

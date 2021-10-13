@@ -1,7 +1,8 @@
 import Flexbox from "flexbox-react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { useAuth } from "../firebase/authentication";
 import { useCreateUserWithEmailAndPassword } from "../firebase/hooks";
 
 import {
@@ -9,7 +10,7 @@ import {
   SkipButton,
   UnderlinedButton,
 } from "../styles/Buttons/AppButtons";
-import { Input } from "../styles/Inputs/AppInputs";
+import { Input, InputForm } from "../styles/Inputs/AppInputs";
 import {
   ErrorContainer,
   ErrorText,
@@ -20,6 +21,7 @@ import {
 import MediaButtons from "./MediaButtons";
 import Password from "./Password";
 import PopUpWindow from "./PopUpWindow";
+import Spinner from "../images/Spinner.gif";
 
 const SignupPage = () => {
   const [email, setEmail] = useState("");
@@ -27,8 +29,9 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [matchPassword, setMatchPassword] = useState(false);
   const [clickSkip, setClickSkip] = useState(false);
-  const [createUserWithEmailAndPassword, user, loading, error] =
+  const [createUserWithEmailAndPassword, loading, error] =
     useCreateUserWithEmailAndPassword();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (password && confirmPassword && password === confirmPassword) {
@@ -51,14 +54,11 @@ const SignupPage = () => {
       return "Error";
     }
   };
-
-  console.log(password, confirmPassword);
-  console.log(error);
+  if (user) return <Redirect to="/account" />;
   return (
     <>
       <Flexbox
         minWidth="300px"
-        className="form__wrapper"
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
@@ -67,24 +67,29 @@ const SignupPage = () => {
         <MainSubtitle>Welcome</MainSubtitle>
         <MediaButtons />
         <OrText>or</OrText>
-        <Input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
-        <Password
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          inputText="Password"
-        />
-        <Password
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          inputText="Confirm password"
-        />
-        <MainButtonSignUp onClick={() => matchPassword && handleSubmit()}>
-          Sign Up
-        </MainButtonSignUp>
+        <InputForm>
+          <Input
+            autoComplete="username"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+          />
+          <Password
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            inputText="Password"
+          />
+          <Password
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            inputText="Confirm password"
+          />
+        </InputForm>
+        {(loading && <img src={Spinner} alt="loading" />) || (
+          <MainButtonSignUp onClick={() => matchPassword && handleSubmit()}>
+            Sign Up
+          </MainButtonSignUp>
+        )}
         <SkipButton onClick={() => setClickSkip(true)}>Not now</SkipButton>
         <Link to="/">
           <UnderlinedButton>Already have an account?</UnderlinedButton>
@@ -101,7 +106,12 @@ const SignupPage = () => {
         </ErrorContainer>
       </Flexbox>
 
-      {clickSkip && <PopUpWindow onClose={() => setClickSkip(false)} />}
+      {clickSkip && (
+        <PopUpWindow
+          onSignUp={handleSubmit}
+          onClose={() => setClickSkip(false)}
+        />
+      )}
     </>
   );
 };

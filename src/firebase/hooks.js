@@ -3,71 +3,70 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
+  FacebookAuthProvider,
   signInWithRedirect,
-  getRedirectResult,
+  onAuthStateChanged,
 } from "firebase/auth";
-import { useState } from "react";
-import app from ".";
+import { useState, useEffect } from "react";
+import app from "./app";
 
 export const useCreateUserWithEmailAndPassword = () => {
   const auth = getAuth(app);
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-  const cb = (email, password) => {
+  const cb = async (email, password) => {
     setLoading(true);
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setLoading(false);
-        setUser(userCredential.user);
-      })
-      .catch((error) => {
-        setLoading(false);
-        setError(error);
-      });
+    try {
+      setLoading(false);
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (err) {
+      setLoading(false);
+      setError(err);
+    }
   };
-  return [cb, user, loading, error];
+  return [cb, loading, error];
 };
 
 export const useSignInWithEmailAndPassword = () => {
   const auth = getAuth(app);
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-  const cb = (email, password) => {
+  const cb = async (email, password) => {
     setLoading(true);
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setLoading(false);
-        setUser(userCredential.user);
-      })
-      .catch((error) => {
-        setLoading(false);
-        setError(error);
-      });
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+    }
   };
-  return [cb, user, loading, error];
+
+  return [cb, loading, error];
 };
 
 export const useGoogleAuth = () => {
+  const provider = new GoogleAuthProvider();
   const auth = getAuth();
-  getRedirectResult(auth)
-    .then((result) => {
-      // This gives you a Google Access Token. You can use it to access Google APIs.
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
+  signInWithRedirect(auth, provider);
+};
 
-      // The signed-in user info.
-      const user = result.user;
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.email;
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
-      // ...
+export const useFacebookAuth = () => {
+  const provider = new FacebookAuthProvider();
+  const auth = getAuth();
+  signInWithRedirect(auth, provider);
+};
+
+export const useUserChangedState = () => {
+  const auth = getAuth(app);
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
     });
+  }, [auth]);
+  return [user];
 };
